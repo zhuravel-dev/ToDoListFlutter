@@ -7,8 +7,19 @@ class FirstScreen extends StatefulWidget {
   _FirstScreenState createState() => _FirstScreenState();
 }
 
-
 class _FirstScreenState extends State<FirstScreen> {
+  var toDoList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    toDoList.addAll([
+      "Покормить кошку",
+      "Прочесть 10 страниц Капитала",
+      "Тренировка в черверг"
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,13 +28,29 @@ class _FirstScreenState extends State<FirstScreen> {
         title: const Text("To Do List"),
         backgroundColor: Colors.green,
       ),
-      body: const Center(
-        child: Text(
-          "This is first screen",
-          style: TextStyle(
-              fontSize: 20, color: Colors.black),
-        ),
-      ),
+      body: ListView.builder(
+          itemCount: toDoList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Dismissible(
+              key: Key(toDoList[index]),
+              child: Card(
+                child: ListTile(
+                  title: Text(toDoList[index]),
+                  trailing: IconButton(
+                    icon: const Icon(
+                      Icons.delete_forever,
+                      color: Colors.green,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        toDoList.removeAt(index);
+                      });
+                    },
+                  ),
+                ),
+              ),
+            );
+          }),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
         onPressed: () {
