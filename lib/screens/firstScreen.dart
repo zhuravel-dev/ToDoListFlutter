@@ -9,14 +9,15 @@ class FirstScreen extends StatefulWidget {
 
 class _FirstScreenState extends State<FirstScreen> {
   var toDoList = [];
+  late String _userData;
 
   @override
   void initState() {
     super.initState();
     toDoList.addAll([
-      "Покормить кошку",
+      "Купить бабуле подарок на др",
       "Прочесть 10 страниц Капитала",
-      "Тренировка в черверг"
+      "Тренировка в черверг в парке"
     ]);
   }
 
@@ -54,7 +55,33 @@ class _FirstScreenState extends State<FirstScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
         onPressed: () {
-          print("Clicked");
+          showDialog(
+              context: context,
+              barrierDismissible: true,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text("Add note"),
+                  content: TextField(
+                    onChanged: (String value) {
+                      _userData = value;
+                    },
+                    decoration: const InputDecoration(hintText: "Write here"),
+                  ),
+                  actions: [
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          toDoList.add(_userData);
+                        });
+                        Navigator.of(context).pop();
+                      },
+                      style: ElevatedButton.styleFrom(primary: Colors.green),
+                      child: const Icon(Icons.done),
+                    ),
+                  ],
+                );
+              }
+             );
         },
         child: const Icon(Icons.add),
       ),
