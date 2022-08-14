@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class FirstScreen extends StatefulWidget {
   const FirstScreen({Key? key}) : super(key: key);
@@ -19,6 +20,12 @@ class _FirstScreenState extends State<FirstScreen> {
       "Прочесть 10 страниц Капитала",
       "Тренировка в черверг в парке"
     ]);
+    initialize();
+  }
+
+  void initialize() async {
+    await Future.delayed(Duration(seconds: 1));
+    FlutterNativeSplash.remove();
   }
 
   @override
