@@ -20,13 +20,13 @@ class _FirstScreenState extends State<FirstScreen> {
       "Прочесть 10 страниц Капитала",
       "Тренировка в черверг в парке"
     ]);
-    initialize();
+   // initialize();
   }
 
-  void initialize() async {
-    await Future.delayed(Duration(seconds: 1));
+  /*void initialize() async {
+    await Future.delayed(Duration(seconds: 0));
     FlutterNativeSplash.remove();
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
