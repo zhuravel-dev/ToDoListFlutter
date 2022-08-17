@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:to_do_list_flutter/screens/loginScreen.dart';
 import 'package:to_do_list_flutter/screens/firstScreen.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -35,29 +36,32 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             Text(
               "BE MORE PRODUCTIVE WITH TODO!",
               style: TextStyle(
-                color: Colors.black.withOpacity(0.7),
-                fontSize: 16,
-                fontWeight: FontWeight.w700
-              ),
+                  color: Colors.black.withOpacity(0.7),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700),
             ),
             Padding(padding: EdgeInsets.symmetric(vertical: 20)),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     primary: Colors.green[500],
                     padding:
-                        EdgeInsets.symmetric(horizontal: 30, vertical: 20)),
+                        EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(12.0))),
                 onPressed: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const FirstScreen()));
+                          builder: (context) => const LoginScreen()));
                 },
                 child: Text('Continue with authorization')),
             Padding(padding: EdgeInsets.symmetric(vertical: 10)),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     primary: Colors.green[500],
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20)),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(12.0)),
+                ),
                 onPressed: () {
                   Navigator.push(
                       context,
