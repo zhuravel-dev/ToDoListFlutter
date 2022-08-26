@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class FirstScreen extends StatefulWidget {
   const FirstScreen({Key? key}) : super(key: key);
@@ -11,6 +12,13 @@ class _FirstScreenState extends State<FirstScreen> {
   var toDoList = [];
   late String _userData;
 
+  final _myBox = Hive.box('ToDoApp');
+
+  void writeData(String value) {
+        _myBox.put(1, value);
+        print(_myBox.get(1));
+  }
+
   @override
   void initState() {
     super.initState();
@@ -19,13 +27,7 @@ class _FirstScreenState extends State<FirstScreen> {
       "Прочесть 10 страниц Капитала",
       "Тренировка в черверг в парке"
     ]);
-   // initialize();
   }
-
-  /*void initialize() async {
-    await Future.delayed(Duration(seconds: 0));
-    FlutterNativeSplash.remove();
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +72,7 @@ class _FirstScreenState extends State<FirstScreen> {
                   content: TextField(
                     onChanged: (String value) {
                       _userData = value;
+                      writeData(value);
                     },
                     decoration: const InputDecoration(hintText: "Write here"),
                   ),

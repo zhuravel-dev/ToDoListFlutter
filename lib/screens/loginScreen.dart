@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: 32),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 200),
+                  padding: const EdgeInsets.symmetric(horizontal: 60),
                   child: Container(
                     decoration: BoxDecoration(
                         color: Colors.white,
@@ -62,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: 12),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 200),
+                  padding: const EdgeInsets.symmetric(horizontal: 60),
                   child: Container(
                     decoration: BoxDecoration(
                         color: Colors.white,
@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: 12),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 200),
+                  padding: const EdgeInsets.symmetric(horizontal: 60),
                   child: Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
