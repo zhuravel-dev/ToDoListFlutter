@@ -38,7 +38,7 @@ class IntroPage2 extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const FirstScreen()));
+                          builder: (context) => const HomeScreen()));
                 },
                 child: Text('CONTINUE WITHOUT AUTHORIZATION', style: TextStyle(color: Colors.white, fontSize: 16))),
           ],

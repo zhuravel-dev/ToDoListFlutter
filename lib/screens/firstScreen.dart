@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class FirstScreen extends StatefulWidget {
-  const FirstScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  _FirstScreenState createState() => _FirstScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _FirstScreenState extends State<FirstScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   var toDoList = [];
   late String _userData;
 
@@ -39,9 +39,15 @@ class _FirstScreenState extends State<FirstScreen> {
       ),
       body: ListView.builder(
           itemCount: toDoList.length,
+          padding: const EdgeInsets.symmetric(vertical: 16),
           itemBuilder: (BuildContext context, int index) {
             return Dismissible(
               key: Key(toDoList[index]),
+              onDismissed: (DismissDirection direction){
+                setState(() {
+                  toDoList.removeAt(index);
+                });
+              },
               child: Card(
                 child: ListTile(
                   title: Text(toDoList[index]),
@@ -50,11 +56,7 @@ class _FirstScreenState extends State<FirstScreen> {
                       Icons.delete_forever,
                       color: Colors.green,
                     ),
-                    onPressed: () {
-                      setState(() {
-                        toDoList.removeAt(index);
-                      });
-                    },
+                    onPressed: () {},
                   ),
                 ),
               ),
