@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'calendar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -15,8 +16,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final _myBox = Hive.box('ToDoApp');
 
   void writeData(String value) {
-        _myBox.put(1, value);
-        print(_myBox.get(1));
+    _myBox.put(1, value);
+    print(_myBox.get(1));
   }
 
   @override
@@ -34,16 +35,23 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.green[100],
       appBar: AppBar(
-        title: const Text("To Do List"),
-        backgroundColor: Colors.green,
-      ),
+          title: const Text("To Do List"),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.calendar_month),
+              onPressed: () => {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const CalendarScreen()))
+              },
+            )
+          ],
+          backgroundColor: Colors.green),
       body: ListView.builder(
           itemCount: toDoList.length,
           padding: const EdgeInsets.symmetric(vertical: 16),
           itemBuilder: (BuildContext context, int index) {
             return Dismissible(
               key: Key(toDoList[index]),
-              onDismissed: (DismissDirection direction){
+              onDismissed: (DismissDirection direction) {
                 setState(() {
                   toDoList.removeAt(index);
                 });
@@ -56,7 +64,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       Icons.delete_forever,
                       color: Colors.green,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        toDoList.removeAt(index);
+                      });
+                    },
                   ),
                 ),
               ),
@@ -91,8 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 );
-              }
-             );
+              });
         },
         child: const Icon(Icons.add),
       ),

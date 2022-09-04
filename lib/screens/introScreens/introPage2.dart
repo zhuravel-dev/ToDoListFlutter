@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../firstScreen.dart';
+import '../homeScreen.dart';
 import '../loginScreen.dart';
 
 class IntroPage2 extends StatelessWidget {
