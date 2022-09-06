@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'calendar.dart';
+import 'package:to_do_list_flutter/widgets/searchBox.dart';
+import 'calendarScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -39,41 +40,55 @@ class _HomeScreenState extends State<HomeScreen> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.calendar_month),
-              onPressed: () => {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const CalendarScreen()))
+              onPressed: () =>
+              {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CalendarScreen()))
               },
             )
           ],
           backgroundColor: Colors.green),
-      body: ListView.builder(
-          itemCount: toDoList.length,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          itemBuilder: (BuildContext context, int index) {
-            return Dismissible(
-              key: Key(toDoList[index]),
-              onDismissed: (DismissDirection direction) {
-                setState(() {
-                  toDoList.removeAt(index);
-                });
-              },
-              child: Card(
-                child: ListTile(
-                  title: Text(toDoList[index]),
-                  trailing: IconButton(
-                    icon: const Icon(
-                      Icons.delete_forever,
-                      color: Colors.green,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        toDoList.removeAt(index);
-                      });
-                    },
-                  ),
-                ),
-              ),
-            );
-          }),
+      body: Stack(
+        children: [
+          Container(
+            padding: EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+            child:
+                mySearchBox(),
+          ),
+          Container(
+              padding: EdgeInsets.only(top: 52.0, left: 4.0, right: 4.0),
+              child: ListView.builder(
+                  itemCount: toDoList.length,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  itemBuilder: (BuildContext context, int index) {
+                    return Dismissible(
+                      key: Key(toDoList[index]),
+                      onDismissed: (DismissDirection direction) {
+                        setState(() {
+                          toDoList.removeAt(index);
+                        });
+                      },
+                      child: Card(
+                        child: ListTile(
+                          title: Text(toDoList[index]),
+                          trailing: IconButton(
+                            icon: const Icon(
+                              Icons.delete_forever,
+                              color: Colors.green),
+                            onPressed: () {
+                              setState(() {
+                                toDoList.removeAt(index);
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    );
+                  }))
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.green,
         onPressed: () {
