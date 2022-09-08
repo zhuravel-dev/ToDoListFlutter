@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:to_do_list_flutter/widgets/searchBox.dart';
+import 'package:to_do_list_flutter/widgets/search.dart';
+import 'package:to_do_list_flutter/widgets/toDoItem.dart';
+import '../model/todo_model.dart';
 import 'calendarScreen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,8 +13,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var toDoList = [];
-  late String _userData;
+
+  List<ToDo> _foundToDo = [];
+  var toDoList = ToDo.toDoList();
 
   final _myBox = Hive.box('ToDoApp');
 
@@ -24,11 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    toDoList.addAll([
-      "Купить бабуле подарок на др",
-      "Прочесть 10 страниц Капитала",
-      "Тренировка в черверг в парке"
-    ]);
+    _foundToDo = toDoList;
   }
 
   @override
@@ -40,8 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.calendar_month),
-              onPressed: () =>
-              {
+              onPressed: () => {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -54,39 +52,15 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Container(
             padding: EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
-            child:
-                mySearchBox(),
+            child: search(),
           ),
           Container(
-              padding: EdgeInsets.only(top: 52.0, left: 4.0, right: 4.0),
-              child: ListView.builder(
-                  itemCount: toDoList.length,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  itemBuilder: (BuildContext context, int index) {
-                    return Dismissible(
-                      key: Key(toDoList[index]),
-                      onDismissed: (DismissDirection direction) {
-                        setState(() {
-                          toDoList.removeAt(index);
-                        });
-                      },
-                      child: Card(
-                        child: ListTile(
-                          title: Text(toDoList[index]),
-                          trailing: IconButton(
-                            icon: const Icon(
-                              Icons.delete_forever,
-                              color: Colors.green),
-                            onPressed: () {
-                              setState(() {
-                                toDoList.removeAt(index);
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                    );
-                  }))
+              padding: EdgeInsets.only(top: 56.0, left: 8.0, right: 8.0),
+              child: Column(
+            children: [
+              for (ToDo todo in _foundToDo.reversed) ToDoItem(todo: todo)
+            ],
+          )),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -100,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   title: const Text("Add note"),
                   content: TextField(
                     onChanged: (String value) {
-                      _userData = value;
+                      // create
                       writeData(value);
                     },
                     decoration: const InputDecoration(hintText: "Write here"),
@@ -109,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          toDoList.add(_userData);
+                          //toDoList.add(_userData);
                         });
                         Navigator.of(context).pop();
                       },
@@ -123,5 +97,21 @@ class _HomeScreenState extends State<HomeScreen> {
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  void listSearch(String enteredData) {
+    List<ToDo> results = [];
+    if (enteredData.isEmpty) {
+      results = toDoList;
+    } else {
+      results = toDoList
+          .where((item) =>
+              item.todoText!.toLowerCase().contains(enteredData.toLowerCase()))
+          .toList();
+    }
+
+    setState() {
+      _foundToDo = results;
+    }
   }
 }

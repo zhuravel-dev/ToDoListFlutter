@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-Widget mySearchBox() {
+Widget search() {
   return Container(
     decoration: BoxDecoration(
         color: Colors.green[200],
         shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(5.0)),
+        borderRadius: BorderRadius.circular(12.0)),
     child: Container(
       padding: EdgeInsets.only(left: 16.0),
         child: TextField(
