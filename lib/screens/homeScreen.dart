@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:to_do_list_flutter/widgets/search.dart';
 import 'package:to_do_list_flutter/widgets/toDoItem.dart';
-import '../model/todo_model.dart';
+import '../model/toDoModel.dart';
 import 'calendarScreen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,9 +13,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-  List<ToDo> _foundToDo = [];
   var toDoList = ToDo.toDoList();
+  List<ToDo> foundToDo = [];
 
   final _myBox = Hive.box('ToDoApp');
 
@@ -26,8 +25,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    foundToDo = toDoList;
     super.initState();
-    _foundToDo = toDoList;
   }
 
   @override
@@ -55,12 +54,18 @@ class _HomeScreenState extends State<HomeScreen> {
             child: search(),
           ),
           Container(
-              padding: EdgeInsets.only(top: 56.0, left: 8.0, right: 8.0),
-              child: Column(
+              padding: EdgeInsets.only(top: 56.0, left: 8.0, right: 8.0, bottom: 8.0),
+              child: ListView(
             children: [
-              for (ToDo todo in _foundToDo.reversed) ToDoItem(todo: todo)
-            ],
-          )),
+              for (ToDo todo in foundToDo.reversed)
+                ToDoItem(
+                      todo: todo,
+                      changeToDo: changeToDo,
+                      deleteToDo: deleteToDo,
+                  )
+                  ]
+            )
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -106,12 +111,50 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       results = toDoList
           .where((item) =>
-              item.todoText!.toLowerCase().contains(enteredData.toLowerCase()))
+              item.text!.toLowerCase().contains(enteredData.toLowerCase()))
           .toList();
     }
 
-    setState() {
-      _foundToDo = results;
-    }
+    setState(() {
+      foundToDo = results;
+    });
   }
+
+  void changeToDo(ToDo todo) {
+    setState(() {
+      todo.isDone = !todo.isDone;
+    });
+  }
+
+  void deleteToDo(String id) {
+    setState(() {
+      toDoList.removeWhere((item) => item.id == id);
+    });
+  }
+
+  Widget search() {
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.green[200],
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(12.0)),
+      child: Container(
+        padding: EdgeInsets.only(left: 16.0),
+        child: TextField(
+          onChanged: (value) => listSearch(value),
+          decoration: InputDecoration(
+              prefixIcon:
+              Center(
+                  child: Icon(Icons.search, color: Colors.white, size: 20)),
+              prefixIconConstraints: BoxConstraints(
+                maxHeight: 20,
+                maxWidth: 20,
+              ),
+              border: InputBorder.none,
+              hintText: 'Search'),
+        ),
+      ),
+    );
+  }
+
 }
