@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:to_do_list_flutter/widgets/search.dart';
+import 'package:to_do_list_flutter/widgets/appBar.dart';
 import 'package:to_do_list_flutter/widgets/toDoItem.dart';
 import '../model/toDoModel.dart';
-import 'calendarScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -15,6 +14,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   var toDoList = ToDo.toDoList();
   List<ToDo> foundToDo = [];
+  late String userData;
 
   final _myBox = Hive.box('ToDoApp');
 
@@ -33,42 +33,25 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.green[100],
-      appBar: AppBar(
-          title: const Text("To Do List"),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.calendar_month),
-              onPressed: () => {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const CalendarScreen()))
-              },
-            )
-          ],
-          backgroundColor: Colors.green),
-      body: Stack(
-        children: [
-          Container(
-            padding: EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
-            child: search(),
-          ),
-          Container(
-              padding: EdgeInsets.only(top: 56.0, left: 8.0, right: 8.0, bottom: 8.0),
-              child: ListView(
+      appBar: MyAppBar(),
+      bottomNavigationBar: BottomAppBar(
+          color: Colors.green[400],
+          shape: CircularNotchedRectangle(),
+          notchMargin: 4.0,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              for (ToDo todo in foundToDo.reversed)
-                ToDoItem(
-                      todo: todo,
-                      changeToDo: changeToDo,
-                      deleteToDo: deleteToDo,
-                  )
-                  ]
-            )
-          ),
-        ],
-      ),
+              IconButton(
+                icon: Icon(Icons.settings),
+                onPressed: () {},
+                color: Colors.white,
+              ),
+            ],
+          )),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
         backgroundColor: Colors.green,
         onPressed: () {
           showDialog(
@@ -79,8 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   title: const Text("Add note"),
                   content: TextField(
                     onChanged: (String value) {
-                      // create
-                      writeData(value);
+                      userData = value;
                     },
                     decoration: const InputDecoration(hintText: "Write here"),
                   ),
@@ -88,8 +70,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          //toDoList.add(_userData);
+                          toDoList.add(ToDo(
+                            id: DateTime.now()
+                                .millisecondsSinceEpoch
+                                .toString(),
+                            text: userData,
+                          ));
                         });
+                        writeData(userData);
                         Navigator.of(context).pop();
                       },
                       style: ElevatedButton.styleFrom(primary: Colors.green),
@@ -99,7 +87,25 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               });
         },
-        child: const Icon(Icons.add),
+      ),
+      body: Stack(
+        children: [
+          Container(
+            padding: EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+            child: search(),
+          ),
+          Container(
+              padding: EdgeInsets.only(
+                  top: 56.0, left: 8.0, right: 8.0, bottom: 8.0),
+              child: ListView(children: [
+                for (ToDo todo in foundToDo.reversed)
+                  ToDoItem(
+                    todo: todo,
+                    changeToDo: changeToDo,
+                    deleteToDo: deleteToDo,
+                  )
+              ])),
+        ],
       ),
     );
   }
@@ -143,8 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: TextField(
           onChanged: (value) => listSearch(value),
           decoration: InputDecoration(
-              prefixIcon:
-              Center(
+              prefixIcon: Center(
                   child: Icon(Icons.search, color: Colors.white, size: 20)),
               prefixIconConstraints: BoxConstraints(
                 maxHeight: 20,
@@ -156,5 +161,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
 }
