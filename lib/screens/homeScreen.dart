@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:to_do_list_flutter/db/HiveAdapterForToDo.dart';
 import 'package:to_do_list_flutter/widgets/appBar.dart';
 import 'package:to_do_list_flutter/widgets/toDoItem.dart';
 import '../model/toDoModel.dart';
@@ -16,11 +17,15 @@ class _HomeScreenState extends State<HomeScreen> {
   List<ToDo> foundToDo = [];
   late String userData;
 
-  final _myBox = Hive.box('ToDoApp');
-
-  void writeData(String value) {
-    _myBox.put(1, value);
-    print(_myBox.get(1));
+  void writeDataToLocalStorage(String value) async {
+    if(!Hive.isAdapterRegistered(0)) {
+        Hive.registerAdapter(HiveAdapterForToDo());
+    }
+    final box = await Hive.openBox('ToDoApp');
+    box.add(value);
+    print(box.values);
+    box.values.toList();
+    box.close();
   }
 
   @override
@@ -35,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.green[100],
       appBar: MyAppBar(),
       bottomNavigationBar: BottomAppBar(
-          color: Colors.green[400],
+          color: Colors.green[300],
           shape: CircularNotchedRectangle(),
           notchMargin: 4.0,
           child: Row(
@@ -72,12 +77,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         setState(() {
                           toDoList.add(ToDo(
                             id: DateTime.now()
-                                .millisecondsSinceEpoch
-                                .toString(),
+                                .millisecondsSinceEpoch,
                             text: userData,
                           ));
                         });
-                        writeData(userData);
+                        writeDataToLocalStorage(userData);
                         Navigator.of(context).pop();
                       },
                       style: ElevatedButton.styleFrom(primary: Colors.green),
@@ -117,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       results = toDoList
           .where((item) =>
-              item.text!.toLowerCase().contains(enteredData.toLowerCase()))
+              item.text.toLowerCase().contains(enteredData.toLowerCase()))
           .toList();
     }
 
