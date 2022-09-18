@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:to_do_list_flutter/db/HiveAdapterForToDo.dart';
+import 'package:to_do_list_flutter/db/ToDoBox.dart';
 import 'package:to_do_list_flutter/widgets/appBar.dart';
 import 'package:to_do_list_flutter/widgets/toDoItem.dart';
 import '../model/toDoModel.dart';
@@ -13,21 +13,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var toDoList = ToDo.toDoList();
-  List<ToDo> foundToDo = [];
+  var toDoList = <ToDoModel>[];
+  List<ToDoModel> foundToDo = [];
   late String userData;
 
   void writeDataToLocalStorage(String value) async {
-    if(!Hive.isAdapterRegistered(0)) {
-        Hive.registerAdapter(HiveAdapterForToDo());
-    }
-    final box = await Hive.openBox('ToDoApp');
-    box.add(value);
+    final box = ToDoBox.getModel();
+    final toDoItem = ToDoModel(id: DateTime.now().millisecondsSinceEpoch, text: value);
+    box.add(toDoItem);
     print(box.values);
-    box.values.toList();
-    box.close();
+    toDoList = box.values.toList();
   }
-
+  
   @override
   void initState() {
     foundToDo = toDoList;
@@ -75,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          toDoList.add(ToDo(
+                          toDoList.add(ToDoModel(
                             id: DateTime.now()
                                 .millisecondsSinceEpoch,
                             text: userData,
@@ -101,21 +98,29 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
               padding: EdgeInsets.only(
                   top: 56.0, left: 8.0, right: 8.0, bottom: 8.0),
-              child: ListView(children: [
-                for (ToDo todo in foundToDo.reversed)
-                  ToDoItem(
-                    todo: todo,
-                    changeToDo: changeToDo,
-                    deleteToDo: deleteToDo,
-                  )
-              ])),
+              child: ValueListenableBuilder<Box<ToDoModel>>(
+                valueListenable: ToDoBox.getModel().listenable(),
+                builder: (context, box, _) {
+                  final item = box.values.toList();
+
+                  return ListView(children: [
+                    for (ToDoModel todo in item.reversed)
+                      ToDoItem(
+                        todo: todo,
+                        changeToDo: changeToDo,
+                        deleteToDo: deleteToDo,
+                      )
+                  ]);
+                }
+                )
+              ),
         ],
       ),
     );
   }
 
   void listSearch(String enteredData) {
-    List<ToDo> results = [];
+    List<ToDoModel> results = [];
     if (enteredData.isEmpty) {
       results = toDoList;
     } else {
@@ -130,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void changeToDo(ToDo todo) {
+  void changeToDo(ToDoModel todo) {
     setState(() {
       todo.isDone = !todo.isDone;
     });
