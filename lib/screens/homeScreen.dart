@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:to_do_list_flutter/db/ToDoBox.dart';
-import 'package:to_do_list_flutter/widgets/appBar.dart';
+import 'package:to_do_list_flutter/screens/settingsScreen.dart';
 import 'package:to_do_list_flutter/widgets/toDoItem.dart';
+
 import '../model/toDoModel.dart';
+import 'calendarScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -35,7 +37,22 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.green[100],
-      appBar: MyAppBar(),
+      appBar: AppBar(
+          title: const Text("To Do List"),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.calendar_month),
+              tooltip: 'Open Calendar',
+              onPressed: () =>
+              {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CalendarScreen()))
+              },
+            )
+          ],
+          backgroundColor: Colors.green),
       bottomNavigationBar: BottomAppBar(
           color: Colors.green[300],
           shape: CircularNotchedRectangle(),
@@ -46,7 +63,9 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               IconButton(
                 icon: Icon(Icons.settings),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsScreen()));
+                },
                 color: Colors.white,
               ),
             ],
