@@ -1,10 +1,9 @@
+import 'package:ToDo/screens/settingsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:to_do_list_flutter/db/ToDoBox.dart';
-import 'package:to_do_list_flutter/screens/settingsScreen.dart';
-import 'package:to_do_list_flutter/widgets/toDoItem.dart';
-
+import '../db/ToDoBox.dart';
 import '../model/toDoModel.dart';
+import '../widgets/toDoItem.dart';
 import 'calendarScreen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,12 +20,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void writeDataToLocalStorage(String value) async {
     final box = ToDoBox.getModel();
-    final toDoItem = ToDoModel(id: DateTime.now().millisecondsSinceEpoch, text: value);
+    final toDoItem = ToDoModel(id: DateTime
+        .now()
+        .millisecondsSinceEpoch, text: value);
     box.add(toDoItem);
     print(box.values);
     toDoList = box.values.toList();
   }
-  
+
   @override
   void initState() {
     foundToDo = toDoList;
@@ -36,25 +37,26 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green[100],
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-          title: const Text("To Do List"),
+          title: Text("To Do List", style: TextStyle(color: Theme
+              .of(context).highlightColor)),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.calendar_month),
+              color: Theme.of(context).iconTheme.color,
               tooltip: 'Open Calendar',
               onPressed: () =>
               {
-                Navigator.push(
-                    context,
+                Navigator.push(context,
                     MaterialPageRoute(
                         builder: (context) => const CalendarScreen()))
               },
             )
           ],
-          backgroundColor: Colors.green),
+          backgroundColor: Theme.of(context).primaryColor),
       bottomNavigationBar: BottomAppBar(
-          color: Colors.green[300],
+          color: Theme.of(context).bottomAppBarColor,
           shape: CircularNotchedRectangle(),
           notchMargin: 4.0,
           child: Row(
@@ -62,18 +64,19 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               IconButton(
-                icon: Icon(Icons.settings),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsScreen()));
-                },
-                color: Colors.white,
+                  icon: Icon(Icons.settings),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => const SettingsScreen()));
+                  },
+                  color: Theme.of(context).iconTheme.color
               ),
             ],
           )),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        backgroundColor: Colors.green,
+        backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
         onPressed: () {
           showDialog(
               context: context,
@@ -92,16 +95,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       onPressed: () {
                         setState(() {
                           toDoList.add(ToDoModel(
-                            id: DateTime.now()
-                                .millisecondsSinceEpoch,
+                            id: DateTime.now().millisecondsSinceEpoch,
                             text: userData,
                           ));
                         });
                         writeDataToLocalStorage(userData);
                         Navigator.of(context).pop();
                       },
-                      style: ElevatedButton.styleFrom(primary: Colors.green),
-                      child: const Icon(Icons.done),
+                      style: ElevatedButton.styleFrom(primary: Theme.of(context).primaryColor),
+                      child: Icon(Icons.done, color: Theme.of(context).iconTheme.color),
                     ),
                   ],
                 );
@@ -118,21 +120,21 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: EdgeInsets.only(
                   top: 56.0, left: 8.0, right: 8.0, bottom: 8.0),
               child: ValueListenableBuilder<Box<ToDoModel>>(
-                valueListenable: ToDoBox.getModel().listenable(),
-                builder: (context, box, _) {
-                  final item = box.values.toList();
+                  valueListenable: ToDoBox.getModel().listenable(),
+                  builder: (context, box, _) {
+                    final item = box.values.toList();
 
-                  return ListView(children: [
-                    for (ToDoModel todo in item.reversed)
-                      ToDoItem(
-                        todo: todo,
-                        changeToDo: changeToDo,
-                        deleteToDo: deleteToDo,
-                      )
-                  ]);
-                }
-                )
-              ),
+                    return ListView(children: [
+                      for (ToDoModel todo in item.reversed)
+                        ToDoItem(
+                          todo: todo,
+                          changeToDo: changeToDo,
+                          deleteToDo: deleteToDo,
+                        )
+                    ]);
+                  }
+              )
+          ),
         ],
       ),
     );
@@ -145,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       results = toDoList
           .where((item) =>
-              item.text.toLowerCase().contains(enteredData.toLowerCase()))
+          item.text.toLowerCase().contains(enteredData.toLowerCase()))
           .toList();
     }
 
@@ -169,7 +171,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget search() {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.green[200],
+          color: Theme
+              .of(context)
+              .primaryColorLight,
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.circular(12.0)),
       child: Container(
@@ -178,10 +182,12 @@ class _HomeScreenState extends State<HomeScreen> {
           onChanged: (value) => listSearch(value),
           decoration: InputDecoration(
               prefixIcon: Center(
-                  child: Icon(Icons.search, color: Colors.white, size: 20)),
+                  child: Icon(Icons.search, color: Theme
+                      .of(context)
+                      .highlightColor, size: 20)),
               prefixIconConstraints: BoxConstraints(
                 maxHeight: 20,
-                maxWidth: 20,
+                maxWidth: 32,
               ),
               border: InputBorder.none,
               hintText: 'Search'),

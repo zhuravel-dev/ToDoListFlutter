@@ -25,10 +25,10 @@ class ToDoItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          tileColor: Colors.white,
+          tileColor: Theme.of(context).cardTheme.color,
           leading: Icon(
             todo.isDone ? Icons.check_box : Icons.check_box_outline_blank,
-            color: Colors.green,
+            color: Theme.of(context).primaryColor,
           ),
           title: Text(
             todo.text,
@@ -37,7 +37,7 @@ class ToDoItem extends StatelessWidget {
             ),
           ),
           trailing: IconButton(
-            icon: const Icon(Icons.delete_forever, color: Colors.green),
+            icon: Icon(Icons.delete_forever, color: Theme.of(context).primaryColor),
             onPressed: () {
               deleteToDo(todo.id);
             },

@@ -16,10 +16,10 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.green[100],
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
-          title: const Text("To Do List"),
-          backgroundColor: Colors.green,
+          title: Text("To Do List", style: TextStyle(color: Theme.of(context).highlightColor),),
+          backgroundColor: Theme.of(context).primaryColor,
         ),
         body: SafeArea(
           child: Center(
@@ -47,8 +47,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 60),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.white),
+                        color: Theme.of(context).cardTheme.color,
+                        border: Border.all(color: Theme.of(context).highlightColor),
                         borderRadius: BorderRadius.circular(12)),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 16.0),
@@ -64,8 +64,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 60),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.white),
+                        color: Theme.of(context).cardTheme.color,
+                        border: Border.all(color: Theme.of(context).highlightColor),
                         borderRadius: BorderRadius.circular(12)),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 16.0),
@@ -83,12 +83,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                        color: Colors.green,
+                        color: Theme.of(context).primaryColor,
                         borderRadius: BorderRadius.circular(12)),
                     child: Center(
                       child: Text(
                         'Sing in',
-                        style: TextStyle(color: Colors.white, fontSize: 16),
+                        style: TextStyle(color: Theme.of(context).highlightColor, fontSize: 16),
                       ),
                     ),
                   ),
@@ -103,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             fontWeight: FontWeight.bold)),
                     Text(' Register now',
                         style: TextStyle(
-                            color: Colors.blue, fontWeight: FontWeight.bold))
+                            color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.bold))
                   ],
                 )
               ],

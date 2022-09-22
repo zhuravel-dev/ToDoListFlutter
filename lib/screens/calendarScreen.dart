@@ -21,10 +21,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.green[100],
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
-          title: const Text("To Do List"),
-          backgroundColor: Colors.green,
+          title: Text("To Do List", style: TextStyle(color: Theme
+              .of(context).highlightColor)),
+          backgroundColor: Theme.of(context).primaryColor,
         ),
         body: TableCalendar(
           focusedDay: focusedDay,
@@ -50,13 +51,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
           },
           calendarStyle: CalendarStyle(
             selectedDecoration: BoxDecoration(
-              color: Colors.green[200],
+              color: Theme.of(context).primaryColorLight,
               shape: BoxShape.circle,
             ),
             isTodayHighlighted: true,
-            selectedTextStyle: TextStyle(color: Colors.white),
+            selectedTextStyle: TextStyle(color: Theme.of(context).highlightColor),
             todayDecoration: BoxDecoration(
-              color: Colors.green,
+              color: Theme.of(context).primaryColor,
               shape: BoxShape.circle,
               //borderRadius: BorderRadius.circular(10.0),
             ),

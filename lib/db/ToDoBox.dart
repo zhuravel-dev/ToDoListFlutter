@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:to_do_list_flutter/model/toDoModel.dart';
+import '../model/toDoModel.dart';
 
 class ToDoBox {
   static Box<ToDoModel> getModel() =>
