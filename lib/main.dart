@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'model/toDoModel.dart';
+import 'package:passcode_screen/passcode_screen.dart';
 
 void main() async {
   await Hive.initFlutter();

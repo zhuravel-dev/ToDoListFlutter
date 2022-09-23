@@ -8,12 +8,10 @@ class IntroPage1 extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-         // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               "WELCOME TO APP!",
-              style: TextStyle(
-                  color: Colors.green,
+              style: TextStyle(color: Colors.green,
                   fontSize: 16,
                   fontWeight: FontWeight.w700),
             ),
