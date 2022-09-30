@@ -1,5 +1,4 @@
 import 'package:ToDo/main.dart';
-import 'package:ToDo/screens/homeScreen.dart';
 import 'package:ToDo/screens/passcodeScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -32,68 +31,75 @@ class _SettingsScreenState extends State<SettingsScreen> {
           children: [
             ListTile(
               onTap: () {
-                showDialog(context: context, builder: (context) {
-                  return AlertDialog(
-                    insetPadding: EdgeInsets.symmetric(
-                        horizontal: 72, vertical: 220),
-                    contentPadding: EdgeInsets.only(top: 16),
-                    title: Text('Select theme:'),
-                    content: Column(
-                      children: [
-                        ListTile(
-                            title: Text('Light theme'),
-                            leading: Checkbox(
-                              value: !isSelected,
-                              onChanged: (bool? changeValue) {
-                                setState(() {
-                                  isSelected = false == changeValue!;
-                                  ToDoApp.of(context)!.changeTheme(
-                                      ThemeMode.light);
-                                });
+                showDialog(context: context, builder: (context) =>
+                StatefulBuilder(
+                    builder: (context, setState) =>
+                        AlertDialog(
+                          insetPadding: EdgeInsets.symmetric(
+                              horizontal: 72, vertical: 220),
+                          contentPadding: EdgeInsets.only(top: 16),
+                          title: Text('Select theme:'),
+                          content: Column(
+                            children: [
+                              ListTile(
+                                  title: Text('Light theme'),
+                                  leading: Checkbox(
+                                    value: !isSelected,
+                                    onChanged: (bool? newValue) {
+                                      setState(() {
+                                        if (isSelected = false == newValue!)
+                                        ToDoApp.of(context)!.changeTheme(
+                                            ThemeMode.dark);
+                                        else ToDoApp.of(context)!.changeTheme(
+                                            ThemeMode.light);
+                                      });
+                                    },
+                                    checkColor: Theme
+                                        .of(context)
+                                        .highlightColor,
+                                    activeColor: Theme
+                                        .of(context)
+                                        .primaryColor,
+                                  )
+                              ),
+                              ListTile(
+                                  title: Text('Dark theme'),
+                                  leading: Checkbox(
+                                    value: isSelected,
+                                    onChanged: (bool? newValue) {
+                                      setState(() {
+                                        if(isSelected = true == newValue!)
+                                        ToDoApp.of(context)!.changeTheme(
+                                            ThemeMode.dark);
+                                        else
+                                          ToDoApp.of(context)!.changeTheme(
+                                              ThemeMode.light);
+                                      });
+                                    },
+                                    checkColor: Theme
+                                        .of(context)
+                                        .highlightColor,
+                                    activeColor: Theme
+                                        .of(context)
+                                        .primaryColor,
+                                  )
+                              ),
+                            ],
+                          ),
+                          actions: [
+                            ElevatedButton(
+                              onPressed: () =>
+                              {
+                                Navigator.of(context).pop(),
                               },
-                              checkColor: Theme
+                              child: Text('Cancel'),
+                              style: ElevatedButton.styleFrom(primary: Theme
                                   .of(context)
-                                  .highlightColor,
-                              activeColor: Theme
-                                  .of(context)
-                                  .primaryColor,
+                                  .primaryColor),
                             )
-                        ),
-                        ListTile(
-                            title: Text('Dark theme'),
-                            leading: Checkbox(
-                              value: isSelected,
-                              onChanged: (bool? changeValue) {
-                                setState(() {
-                                  isSelected = true == changeValue!;
-                                  ToDoApp.of(context)!.changeTheme(
-                                      ThemeMode.dark);
-                                });
-                              },
-                              checkColor: Theme
-                                  .of(context)
-                                  .highlightColor,
-                              activeColor: Theme
-                                  .of(context)
-                                  .primaryColor,
-                            )
-                        ),
-                      ],
-                    ),
-                    actions: [
-                      ElevatedButton(
-                        onPressed: () =>
-                        {
-                          Navigator.of(context).pop(),
-                        },
-                        child: Text('Cancel'),
-                        style: ElevatedButton.styleFrom(primary: Theme
-                            .of(context)
-                            .primaryColor),
-                      )
-                    ],
-                  );
-                }
+                          ],
+                        )
+                )
                 );
               },
               shape: new RoundedRectangleBorder(
@@ -159,10 +165,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               }
                               );
                             });
-                          },),
+                          },
+                        ),
                       ),
                       )
               )
       );
-
 }

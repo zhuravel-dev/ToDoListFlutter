@@ -1,8 +1,5 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:passcode_screen/circle.dart';
-import 'package:passcode_screen/keyboard.dart';
 import 'package:passcode_screen/passcode_screen.dart';
 
 
@@ -17,11 +14,11 @@ class _HomeScreenState extends State<ConfigurePasscodeScreen> {
   final StreamController<bool> _verificationNotifier = StreamController<bool>.broadcast();
   bool isAuthenticated = false;
 
-/*  @override
+  @override
   void dispose() {
     _verificationNotifier.close();
     super.dispose();
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +39,6 @@ class _HomeScreenState extends State<ConfigurePasscodeScreen> {
 
   _passcode(BuildContext context,
       { required bool opaque,
-        CircleUIConfig? circleUIConfig,
-        KeyboardUIConfig? keyboardUIConfig,
         Widget? cancelButton,
         List<String>? digits } ) =>
       Navigator.push(context, PageRouteBuilder(
@@ -52,14 +47,24 @@ class _HomeScreenState extends State<ConfigurePasscodeScreen> {
             title: Text('Enter you passcode',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Theme.of(context).highlightColor, fontSize: 28)),
-            circleUIConfig: circleUIConfig,
-            keyboardUIConfig: keyboardUIConfig,
             passwordEnteredCallback: _passcodeEntered,
-            cancelButton: Text(
+            cancelButton: MaterialButton(onPressed: () {Navigator.of(context).pop(); },
+            child: Text(
               'Cancel',
               style: TextStyle(fontSize: 16, color: Theme.of(context).highlightColor),
               semanticsLabel: 'Cancel',
             ),
+            ),
+            /* GestureDetector(
+              onTap: () { Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => const SettingsScreen())); },
+              child: Text(
+                'Cancel',
+                style: TextStyle(fontSize: 16, color: Theme.of(context).highlightColor),
+                semanticsLabel: 'Cancel',
+              ),
+            ),*/
+
             deleteButton: Text(
               'Delete',
               style: TextStyle(fontSize: 16, color: Theme.of(context).highlightColor),
@@ -76,7 +81,7 @@ class _HomeScreenState extends State<ConfigurePasscodeScreen> {
 
 
   _passcodeEntered(String enteredPasscode) {
-    bool isValid = true == enteredPasscode;
+    bool isValid = '1234' == enteredPasscode;
     _verificationNotifier.add(isValid);
     if (isValid) {
       setState(() {
@@ -86,8 +91,7 @@ class _HomeScreenState extends State<ConfigurePasscodeScreen> {
   }
 
   _passcodeCancelled() {
-    Navigator.maybePop(context);
+    Navigator.of(context).pop();
   }
-
 
 }
