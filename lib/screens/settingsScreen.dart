@@ -1,5 +1,5 @@
 import 'package:ToDo/main.dart';
-import 'package:ToDo/screens/passcodeScreen.dart';
+import 'package:ToDo/screens/passcode/createPasscodeScreen.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -15,9 +15,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme
-          .of(context)
-          .backgroundColor,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
           title: Text("To Do List", style: TextStyle(color: Theme
               .of(context)
@@ -93,7 +91,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 Navigator.of(context).pop(),
                               },
                               child: Text('Cancel'),
-                              style: ElevatedButton.styleFrom(primary: Theme
+                              style: ElevatedButton.styleFrom(backgroundColor: Theme
                                   .of(context)
                                   .primaryColor),
                             )
@@ -105,13 +103,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               shape: new RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(16)),
               contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              tileColor: Theme
-                  .of(context)
-                  .cardTheme
-                  .color,
-              leading: Icon(Icons.color_lens_outlined, color: Theme
-                  .of(context)
-                  .primaryColor),
+              tileColor: Theme.of(context).cardTheme.color,
+              leading: Icon(Icons.color_lens_outlined, color: Theme.of(context).primaryColor),
               title: Text(
                 "App`s colors",
                 style: TextStyle(fontSize: 16),
@@ -160,7 +153,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               isSelected = value;
                               Future.delayed(Duration(seconds: 1), () {
                                 Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) => const ConfigurePasscodeScreen())
+                                    builder: (context) => CreatePasscodeScreen())
                                 );
                               }
                               );

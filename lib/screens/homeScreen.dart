@@ -1,14 +1,14 @@
+import 'dart:async';
 import 'package:ToDo/screens/settingsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
-import '../db/ToDoBox.dart';
+import '../db/toDoBox.dart';
 import '../model/toDoModel.dart';
 import '../widgets/toDoItem.dart';
 import 'calendarScreen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  HomeScreen({Key? key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -18,21 +18,19 @@ class _HomeScreenState extends State<HomeScreen> {
   var toDoList = <ToDoModel>[];
   List<ToDoModel> foundToDo = [];
   late String userData;
-
-  void writeDataToLocalStorage(String value) async {
-    final box = ToDoBox.getModel();
-    final toDoItem = ToDoModel(id: DateTime
-        .now()
-        .millisecondsSinceEpoch, text: value);
-    box.add(toDoItem);
-    print(box.values);
-    toDoList = box.values.toList();
-  }
+  final StreamController<bool> _verificationNotifier = StreamController<bool>.broadcast();
+  bool isAuthenticated = false;
 
   @override
   void initState() {
-    foundToDo = toDoList;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    Hive.box('Passcode').close();
+    _verificationNotifier.close();
+    super.dispose();
   }
 
   @override
@@ -103,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         writeDataToLocalStorage(userData);
                         Navigator.of(context).pop();
                       },
-                      style: ElevatedButton.styleFrom(primary: Theme.of(context).primaryColor),
+                      style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).primaryColor),
                       child: Icon(Icons.done, color: Theme.of(context).iconTheme.color),
                     ),
                   ],
@@ -124,7 +122,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   valueListenable: ToDoBox.getModel().listenable(),
                   builder: (context, box, _) {
                     final item = box.values.toList();
-
                     return ListView(children: [
                       for (ToDoModel todo in item.reversed)
                         ToDoItem(
@@ -191,9 +188,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 maxWidth: 32,
               ),
               border: InputBorder.none,
-              hintText: 'Search'),
+              hintText: 'Search' ),
         ),
       ),
     );
   }
+
+  void writeDataToLocalStorage(String value) async {
+    final box = ToDoBox.getModel();
+    final toDoItem = ToDoModel(id: DateTime.now()
+        .millisecondsSinceEpoch, text: value);
+    box.add(toDoItem);
+    print(box.values);
+    toDoList = box.values.toList();
+  }
+
 }

@@ -15,10 +15,4 @@ class ToDoModel extends HiveObject {
     required this.text,
     this.isDone = false,
   });
-
-  /*@override
-  String toString() {
-    return "($this.text)";
-  }*/
-
 }

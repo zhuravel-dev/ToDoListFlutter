@@ -1,20 +1,26 @@
 import 'dart:ui';
+import 'package:ToDo/model/passcodeModel.dart';
+import 'package:ToDo/screens/homeScreen.dart';
 import 'package:ToDo/screens/onBoardingScreen.dart';
+import 'package:ToDo/screens/passcode/createPasscodeScreen.dart';
 import 'package:ToDo/theme/customThemes.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'db/passcodeBox.dart';
 import 'model/toDoModel.dart';
-import 'package:passcode_screen/passcode_screen.dart';
 
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(ToDoModelAdapter());
   await Hive.openBox<ToDoModel>('ToDoApp');
+  Hive.registerAdapter(PasscodeModelAdapter());
+  await Hive.openBox<PasscodeModel>('Passcode');
   var widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(ToDoApp());
 }
+
 
 class ToDoApp extends StatefulWidget {
     @override
@@ -51,4 +57,5 @@ class AppScrollBehavior extends MaterialScrollBehavior {
     PointerDeviceKind.touch,
     PointerDeviceKind.mouse,
   };
+
 }
