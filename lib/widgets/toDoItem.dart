@@ -39,7 +39,7 @@ class ToDoItem extends StatelessWidget {
           trailing: IconButton(
             icon: Icon(Icons.delete_forever, color: Theme.of(context).primaryColor),
             onPressed: () {
-              deleteToDo(todo.id);
+              deleteToDo(todo);
             },
           )),
     );

@@ -1,9 +1,9 @@
-import 'dart:async';
 import 'package:ToDo/screens/settingsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../db/toDoBox.dart';
 import '../model/toDoModel.dart';
+import '../model/toDoModelFiltered.dart';
 import '../widgets/toDoItem.dart';
 import 'calendarScreen.dart';
 
@@ -15,11 +15,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var toDoList = <ToDoModel>[];
-  List<ToDoModel> foundToDo = [];
   late String userData;
-  final StreamController<bool> _verificationNotifier = StreamController<bool>.broadcast();
-  bool isAuthenticated = false;
+  bool isSearch = false;
 
   @override
   void initState() {
@@ -29,7 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     Hive.box('Passcode').close();
-    _verificationNotifier.close();
     super.dispose();
   }
 
@@ -93,10 +89,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          toDoList.add(ToDoModel(
-                            id: DateTime.now().millisecondsSinceEpoch,
-                            text: userData,
-                          ));
+                          ToDoBox.getModel().add(
+                              ToDoModel(
+                                id: DateTime.now().millisecondsSinceEpoch,
+                                text: userData,
+                              )
+                          );
                         });
                         writeDataToLocalStorage(userData);
                         Navigator.of(context).pop();
@@ -118,20 +116,42 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
               padding: EdgeInsets.only(
                   top: 56.0, left: 8.0, right: 8.0, bottom: 8.0),
-              child: ValueListenableBuilder<Box<ToDoModel>>(
-                  valueListenable: ToDoBox.getModel().listenable(),
-                  builder: (context, box, _) {
-                    final item = box.values.toList();
-                    return ListView(children: [
-                      for (ToDoModel todo in item.reversed)
-                        ToDoItem(
-                          todo: todo,
-                          changeToDo: changeToDo,
-                          deleteToDo: deleteToDo,
-                        )
-                    ]);
-                  }
-              )
+              child: Column(
+                children: [
+                  ValueListenableBuilder<Box<ToDoModel>>(
+                      valueListenable: ToDoBox.getModel().listenable(),
+                      builder: (context, box, _) {
+                        final item = box.values.toList();
+                        ListView list = ListView(children: [],);
+                        if(!isSearch) list = ListView(children: [
+                          for (ToDoModel todo in item.reversed)
+                            ToDoItem(
+                              todo: todo,
+                              changeToDo: changeToDo,
+                              deleteToDo: deleteToDo,
+                            )
+                        ]);
+                        return list;
+                      }
+                  ),
+                  ValueListenableBuilder<Box<ToDoModelFiltered>>(
+                      valueListenable: ToDoBox.getModelFiltered().listenable(),
+                      builder: (context, box, _) {
+                        final item = box.values.toList();
+                        ListView list = ListView(children: [],);
+                        if(isSearch) list = ListView(children: [
+                          for (ToDoModelFiltered todo in item.reversed)
+                            ToDoItem(
+                              todo: ToDoModel(id: todo.id, text: todo.text, isDone: todo.isDone),
+                              changeToDo: changeToDo,
+                              deleteToDo: deleteToDo,
+                            )
+                        ]);
+                        return list;
+                      }
+                  )
+                ],
+              ),
           ),
         ],
       ),
@@ -139,19 +159,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void listSearch(String enteredData) {
-    List<ToDoModel> results = [];
-    if (enteredData.isEmpty) {
-      results = toDoList;
-    } else {
-      results = toDoList
-          .where((item) =>
-          item.text.toLowerCase().contains(enteredData.toLowerCase()))
-          .toList();
-    }
-
-    setState(() {
-      foundToDo = results;
-    });
+     isSearch = enteredData.isNotEmpty;
+    final box = ToDoBox.getModel();
+    final results = box.values.where((item) => item.text.toLowerCase().contains(enteredData.toLowerCase()))
+        .toList();
+    ToDoBox.getModelFiltered().clear();
+    ToDoBox.getModelFiltered().addAll(results.map((e) => ToDoModelFiltered(id: e.id, text: e.text, isDone: e.isDone,)));
   }
 
   void changeToDo(ToDoModel todo) {
@@ -160,9 +173,9 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void deleteToDo(String id) {
+  void deleteToDo(ToDoModel todo) {
     setState(() {
-      toDoList.removeWhere((item) => item.id == id);
+     todo.delete();
     });
   }
 
@@ -200,7 +213,6 @@ class _HomeScreenState extends State<HomeScreen> {
         .millisecondsSinceEpoch, text: value);
     box.add(toDoItem);
     print(box.values);
-    toDoList = box.values.toList();
   }
 
 }

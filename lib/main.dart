@@ -9,13 +9,19 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'db/passcodeBox.dart';
 import 'model/toDoModel.dart';
+import 'model/toDoModelFiltered.dart';
 
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(ToDoModelAdapter());
   await Hive.openBox<ToDoModel>('ToDoApp');
+
+  Hive.registerAdapter(ToDoModelFilteredAdapter());
+  await Hive.openBox<ToDoModelFiltered>('ToDoAppF');
+
   Hive.registerAdapter(PasscodeModelAdapter());
   await Hive.openBox<PasscodeModel>('Passcode');
+
   var widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(ToDoApp());
