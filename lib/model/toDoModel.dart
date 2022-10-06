@@ -1,4 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
+
 part 'toDoModel.g.dart';
 
 @HiveType(typeId: 0)
@@ -9,10 +10,13 @@ class ToDoModel extends HiveObject {
   String text;
   @HiveField(2)
   bool isDone;
+  @HiveField(3)
+  bool isFromSearch;
 
   ToDoModel({
     required this.id,
     required this.text,
     this.isDone = false,
+    this.isFromSearch = false
   });
 }

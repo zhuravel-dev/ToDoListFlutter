@@ -1,23 +1,17 @@
 import 'dart:ui';
 import 'package:ToDo/model/passcodeModel.dart';
-import 'package:ToDo/screens/homeScreen.dart';
 import 'package:ToDo/screens/onBoardingScreen.dart';
-import 'package:ToDo/screens/passcode/createPasscodeScreen.dart';
 import 'package:ToDo/theme/customThemes.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'db/passcodeBox.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'model/toDoModel.dart';
-import 'model/toDoModelFiltered.dart';
+
 
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(ToDoModelAdapter());
   await Hive.openBox<ToDoModel>('ToDoApp');
-
-  Hive.registerAdapter(ToDoModelFilteredAdapter());
-  await Hive.openBox<ToDoModelFiltered>('ToDoAppF');
 
   Hive.registerAdapter(PasscodeModelAdapter());
   await Hive.openBox<PasscodeModel>('Passcode');

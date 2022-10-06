@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../db/toDoBox.dart';
 import '../model/toDoModel.dart';
-import '../model/toDoModelFiltered.dart';
 import '../widgets/toDoItem.dart';
 import 'calendarScreen.dart';
 
@@ -15,8 +14,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  var toDoList = <ToDoModel>[];
   late String userData;
-  bool isSearch = false;
+  final searchController = TextEditingController();
+  var isSearch = false;
 
   @override
   void initState() {
@@ -89,12 +90,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          ToDoBox.getModel().add(
-                              ToDoModel(
-                                id: DateTime.now().millisecondsSinceEpoch,
-                                text: userData,
-                              )
-                          );
+                          toDoList.add(ToDoModel(
+                            id: DateTime.now().millisecondsSinceEpoch,
+                            text: userData,
+                          ));
                         });
                         writeDataToLocalStorage(userData);
                         Navigator.of(context).pop();
@@ -116,55 +115,49 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
               padding: EdgeInsets.only(
                   top: 56.0, left: 8.0, right: 8.0, bottom: 8.0),
-              child: Column(
-                children: [
-                  ValueListenableBuilder<Box<ToDoModel>>(
-                      valueListenable: ToDoBox.getModel().listenable(),
-                      builder: (context, box, _) {
-                        final item = box.values.toList();
-                        ListView list = ListView(children: [],);
-                        if(!isSearch) list = ListView(children: [
-                          for (ToDoModel todo in item.reversed)
-                            ToDoItem(
-                              todo: todo,
-                              changeToDo: changeToDo,
-                              deleteToDo: deleteToDo,
-                            )
-                        ]);
-                        return list;
-                      }
-                  ),
-                  ValueListenableBuilder<Box<ToDoModelFiltered>>(
-                      valueListenable: ToDoBox.getModelFiltered().listenable(),
-                      builder: (context, box, _) {
-                        final item = box.values.toList();
-                        ListView list = ListView(children: [],);
-                        if(isSearch) list = ListView(children: [
-                          for (ToDoModelFiltered todo in item.reversed)
-                            ToDoItem(
-                              todo: ToDoModel(id: todo.id, text: todo.text, isDone: todo.isDone),
-                              changeToDo: changeToDo,
-                              deleteToDo: deleteToDo,
-                            )
-                        ]);
-                        return list;
-                      }
-                  )
-                ],
-              ),
+              child: ValueListenableBuilder<Box<ToDoModel>>(
+                  valueListenable: ToDoBox.getModel().listenable(),
+                  builder: (context, box, _) {
+                    final dbList = ToDoBox.getModel().values.toList();
+                    List<ToDoModel> listToShow = [];
+                    if(isSearch) listToShow = dbList.where((element) => element.isFromSearch).toList();
+                    else listToShow = dbList;
+                    return ListView(children: [
+                      for (ToDoModel todo in listToShow.reversed)
+                        ToDoItem(
+                          todo: todo,
+                          changeToDo: changeToDo,
+                          deleteToDo: deleteToDo,
+                        )
+                    ]);
+                  }
+              )
           ),
         ],
       ),
     );
   }
 
-  void listSearch(String enteredData) {
-     isSearch = enteredData.isNotEmpty;
-    final box = ToDoBox.getModel();
-    final results = box.values.where((item) => item.text.toLowerCase().contains(enteredData.toLowerCase()))
-        .toList();
-    ToDoBox.getModelFiltered().clear();
-    ToDoBox.getModelFiltered().addAll(results.map((e) => ToDoModelFiltered(id: e.id, text: e.text, isDone: e.isDone,)));
+  void listSearch(String value) {
+    final enteredData = searchController.text;
+    isSearch = enteredData.isNotEmpty;
+    final currentValues = ToDoBox.getModel().values;
+    final foundValues = currentValues.where((ToDoModel todo) {
+    return todo.text.contains(enteredData);
+    }).toList();
+    final List<ToDoModel> listCopied = currentValues.toList();
+    listCopied.forEach((element) {
+      var copyElement = element;
+      if(foundValues.contains(element)) {
+        element.delete();
+        copyElement.isFromSearch = true;
+        ToDoBox.getModel().add(copyElement);
+      } else {
+        element.delete();
+        copyElement.isFromSearch = false;
+        ToDoBox.getModel().add(copyElement);
+      }
+    });
   }
 
   void changeToDo(ToDoModel todo) {
@@ -175,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void deleteToDo(ToDoModel todo) {
     setState(() {
-     todo.delete();
+      todo.delete();
     });
   }
 
@@ -190,6 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Container(
         padding: EdgeInsets.only(left: 16.0),
         child: TextField(
+          controller: searchController,
           onChanged: (value) => listSearch(value),
           decoration: InputDecoration(
               prefixIcon: Center(
@@ -213,6 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
         .millisecondsSinceEpoch, text: value);
     box.add(toDoItem);
     print(box.values);
+    toDoList = box.values.toList();
   }
 
 }
