@@ -1,7 +1,6 @@
 import 'package:ToDo/screens/homeScreen.dart';
 import 'package:flutter/material.dart';
 
-
 class PasscodeSettingsScreen extends StatefulWidget {
   const PasscodeSettingsScreen({Key? key}) : super(key: key);
 

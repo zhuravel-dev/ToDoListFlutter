@@ -17,16 +17,19 @@ class PasscodeModelAdapter extends TypeAdapter<PasscodeModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PasscodeModel(
-      passcode: fields[0] as String,
+      id: fields[0] as int,
+      text: fields[1] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, PasscodeModel obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.passcode);
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.text);
   }
 
   @override

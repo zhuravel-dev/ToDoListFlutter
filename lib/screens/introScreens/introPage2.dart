@@ -1,5 +1,5 @@
+import 'package:ToDo/screens/passcode/checkPasscodeScreen.dart';
 import 'package:flutter/material.dart';
-import '../homeScreen.dart';
 import '../loginScreen.dart';
 
 class IntroPage2 extends StatelessWidget {
@@ -37,7 +37,7 @@ class IntroPage2 extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => HomeScreen()));
+                          builder: (context) => CheckPasscodeScreen()));
                 },
                 child: Text('CONTINUE WITHOUT AUTHORIZATION', style: TextStyle(color:  Theme.of(context).highlightColor, fontSize: 16))),
           ],

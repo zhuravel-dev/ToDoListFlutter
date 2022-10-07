@@ -49,8 +49,8 @@ class _CheckPasscodeScreenState extends State<CheckPasscodeScreen> {
   }
 
   void isPasscodeOn(BuildContext context) async {
-    final securityBox = PasscodeBox.getModel();
-    if (securityBox.getAt(0) != null) {
+    final savedPasscode = PasscodeBox.getModel().getAt(0);
+    if (savedPasscode != null) {
       showPasscode(context, opaque: true);
     } else
         Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
@@ -97,8 +97,8 @@ class _CheckPasscodeScreenState extends State<CheckPasscodeScreen> {
                   )));
 
   passcodeEntered(String enteredPasscode) async {
-    //var savedPassInDB = PasscodeBox.getModel().getAt(0);
-    bool isValid = enteredPasscode == enteredPasscode;
+    var savedPassInDB = PasscodeBox.getModel().getAt(0)?.text;
+    bool isValid = savedPassInDB == enteredPasscode;
     _verificationNotifier.add(isValid);
     if (isValid) {
       setState(() {

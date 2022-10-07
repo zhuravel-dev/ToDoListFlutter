@@ -23,6 +23,7 @@ class _CreatePasscodeScreenState extends State<CreatePasscodeScreen> {
   final StreamController<bool> _verificationNotifier =
       StreamController<bool>.broadcast();
   bool isAuthenticated = false;
+  var savedPasscode = <PasscodeModel>[];
 
   @override
   void initState() {
@@ -126,8 +127,8 @@ class _CreatePasscodeScreenState extends State<CreatePasscodeScreen> {
 
   passcodeEntered(String enteredPasscode) {
     writePasscodeToLocalStorage(enteredPasscode);
-    //final enteredPassInDB = PasscodeBox.getModel().getAt(0);
-    bool isValid = enteredPasscode == enteredPasscode;
+    final savedPasscodeInDB = PasscodeBox.getModel().getAt(0)?.text;
+    bool isValid = savedPasscodeInDB == enteredPasscode;
     _verificationNotifier.add(isValid);
     if (isValid) {
       setState(() {
@@ -146,7 +147,10 @@ class _CreatePasscodeScreenState extends State<CreatePasscodeScreen> {
 
   void writePasscodeToLocalStorage(String passcode) async {
     final securityBox = PasscodeBox.getModel();
-    final userEnteredPasscode = PasscodeModel(passcode: passcode);
+    final userEnteredPasscode = PasscodeModel(id: DateTime.now()
+        .millisecondsSinceEpoch, text: passcode);
     securityBox.add(userEnteredPasscode);
+    print(securityBox.values);
+    savedPasscode = securityBox.values.toList();
   }
 }

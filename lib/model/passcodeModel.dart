@@ -1,13 +1,17 @@
 import 'package:hive/hive.dart';
+
 part 'passcodeModel.g.dart';
 
 @HiveType(typeId: 1)
 class PasscodeModel extends HiveObject {
   @HiveField(0)
-  String passcode;
+  int id;
+  @HiveField(1)
+  String text;
 
     PasscodeModel({
-      required this.passcode,
+      required this.id,
+      required this.text
     });
 }
 
