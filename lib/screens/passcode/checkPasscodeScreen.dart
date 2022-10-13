@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'package:ToDo/screens/settingsScreen.dart';
+import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:passcode_screen/passcode_screen.dart';
 import '../../db/passcodeBox.dart';
@@ -35,13 +36,13 @@ class _CheckPasscodeScreenState extends State<CheckPasscodeScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-          title: Text("Check passcode", style: TextStyle(color: Theme
+          title: Text("To Do List", style: TextStyle(color: Theme
               .of(context).highlightColor)),
           backgroundColor: Theme.of(context).primaryColor,
           leading: IconButton(
-            icon: Icon(Icons.settings),
+            icon: Icon(Icons.arrow_back),
               onPressed: () => {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen()))
+              SystemNavigator.pop()
               },
           ),
       )
@@ -49,11 +50,16 @@ class _CheckPasscodeScreenState extends State<CheckPasscodeScreen> {
   }
 
   void isPasscodeOn(BuildContext context) async {
-    final savedPasscode = PasscodeBox.getModel().getAt(0);
-    if (savedPasscode != null) {
+    final savedPasscode = PasscodeBox.getModel().values.toList();
+    if (savedPasscode.length != 0) {
       showPasscode(context, opaque: true);
-    } else
-        Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    }
+    if (savedPasscode.length == 0) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    }
+    else {
+      log('error in isPasscodeOn, checkPasscodeScreen');
+    }
     }
 
   void showPasscode(BuildContext context,
@@ -113,5 +119,4 @@ class _CheckPasscodeScreenState extends State<CheckPasscodeScreen> {
   passcodeCancelled() {
     Navigator.of(context).pop();
   }
-
 }

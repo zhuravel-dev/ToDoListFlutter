@@ -1,6 +1,8 @@
 import 'package:ToDo/main.dart';
 import 'package:ToDo/screens/passcode/createPasscodeScreen.dart';
+import 'package:ToDo/screens/passcode/passcodeSettingsScreen.dart';
 import 'package:flutter/material.dart';
+import '../db/passcodeBox.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -11,6 +13,7 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool isSelected = false;
+  final savedPasscodeInDB = PasscodeBox.getModel();
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +132,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     .of(context)
                     .primaryColor),
                 onTap: () {
-                  openSetSecurityDialog();
+                  if (savedPasscodeInDB.length != 0) {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => PasscodeSettingsScreen()));
+                  }
+                  else { openSetSecurityDialog(); }
                 }),
           ],
         ),
