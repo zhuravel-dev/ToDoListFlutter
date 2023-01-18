@@ -78,31 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
               context: context,
               barrierDismissible: true,
               builder: (context) {
-                return AlertDialog(
-                  title: const Text("Add note"),
-                  content: TextField(
-                    onChanged: (String value) {
-                      userData = value;
-                    },
-                    decoration: const InputDecoration(hintText: "Write here"),
-                  ),
-                  actions: [
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          toDoList.add(ToDoModel(
-                            id: DateTime.now().millisecondsSinceEpoch,
-                            text: userData,
-                          ));
-                        });
-                        writeDataToLocalStorage(userData);
-                        Navigator.of(context).pop();
-                      },
-                      style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).primaryColor),
-                      child: Icon(Icons.done, color: Theme.of(context).iconTheme.color),
-                    ),
-                  ],
-                );
+                return AlertDialogAddTask();
               });
         },
       ),
@@ -208,6 +184,34 @@ class _HomeScreenState extends State<HomeScreen> {
     box.add(toDoItem);
     print(box.values);
     toDoList = box.values.toList();
+  }
+
+  AlertDialog AlertDialogAddTask() {
+    return AlertDialog(
+      title: const Text("Add note"),
+      content: TextField(
+        onChanged: (String value) {
+          userData = value;
+        },
+        decoration: const InputDecoration(hintText: "Write here"),
+      ),
+      actions: [
+        ElevatedButton(
+          onPressed: () {
+            setState(() {
+              toDoList.add(ToDoModel(
+                id: DateTime.now().millisecondsSinceEpoch,
+                text: userData,
+              ));
+            });
+            writeDataToLocalStorage(userData);
+            Navigator.of(context).pop();
+          },
+          style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).primaryColor),
+          child: Icon(Icons.done, color: Theme.of(context).iconTheme.color),
+        ),
+      ],
+    );
   }
 
 }

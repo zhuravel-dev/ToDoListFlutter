@@ -27,8 +27,13 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  rxdart: 0.27.3
+  just_the_tooltip: ^0.0.12
+  super_tooltip: ^1.0.1
+  simple_tooltip: ^1.2.0
   flutter:
     sdk: flutter
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -41,6 +46,7 @@ dependencies:
   hive_flutter: ^1.1.0
   table_calendar: ^3.0.6
   passcode_screen: 2.0.1
+  syncfusion_flutter_charts: ^19.1.55+1
 
 dev_dependencies:
   flutter_test:
