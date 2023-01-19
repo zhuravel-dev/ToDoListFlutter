@@ -1,6 +1,7 @@
 import 'package:ToDo/screens/settingsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import '../blocAddTaskEvent.dart';
 import '../db/toDoBox.dart';
 import '../model/toDoModel.dart';
 import '../widgets/toDoItem.dart';
@@ -14,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  BlocAddTaskEvent _bloc = BlocAddTaskEvent();
   var toDoList = <ToDoModel>[];
   late String userData;
   final searchController = TextEditingController();
@@ -27,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     Hive.box('Passcode').close();
+    _bloc.dispose();
     super.dispose();
   }
 
@@ -74,12 +77,19 @@ class _HomeScreenState extends State<HomeScreen> {
         child: const Icon(Icons.add),
         backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
         onPressed: () {
+          _bloc.inputEventSink.add(ClickToButtonEvent.event_click);
           showDialog(
               context: context,
               barrierDismissible: true,
-              builder: (context) {
-                return AlertDialogAddTask();
-              });
+              builder: (_) => StreamBuilder(
+                  stream: _bloc.outputStateStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.none) {
+                      return AlertDialogAddTask();
+                    }
+                    else return AlertDialogAddTask();
+                  }
+              ));
         },
       ),
       body: Stack(

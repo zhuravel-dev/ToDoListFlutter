@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 enum checkboxEvent {event_active, event_inactive}
-enum ClickToButtonEvent {event_click}
+enum ClickToButtonEvent {event_click, }
 
 class BlocAddTaskEvent {
 
@@ -16,6 +16,7 @@ class BlocAddTaskEvent {
 
   void _mapEventToState(ClickToButtonEvent event) {
     if(event ==  ClickToButtonEvent.event_click) _alertDialog = AlertDialog();
+    else {}
 
     _outputStateController.sink.add(_alertDialog);
   }
