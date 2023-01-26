@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.only(left: 16.0),
                       child: TextField(
                         decoration: InputDecoration(
-                            border: InputBorder.none, hintText: 'Email'),
+                            border: InputBorder.none, hintText: 'Login'),
                       ),
                     ),
                   ),

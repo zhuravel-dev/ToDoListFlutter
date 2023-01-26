@@ -41,12 +41,14 @@ class _ToDoAppState extends State<ToDoApp>{
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: _themeMode,
       scrollBehavior: AppScrollBehavior(),
-      home: OnBoardingScreen(),
+      home: //BlocProvider(create: (context) => Bloc()),
+      OnBoardingScreen(),
     );
   }
 }

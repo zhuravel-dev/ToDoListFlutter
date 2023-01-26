@@ -1,6 +1,6 @@
 import 'package:ToDo/screens/passcode/checkPasscodeScreen.dart';
 import 'package:flutter/material.dart';
-import '../loginScreen.dart';
+import '../../loginScreen/loginScreen.dart';
 
 class IntroPage2 extends StatelessWidget {
   @override
