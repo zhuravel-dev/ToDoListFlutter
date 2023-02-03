@@ -1,8 +1,7 @@
-import 'package:ToDo/loginScreen/password.dart';
+import 'package:ToDo/loginScreen/password_validation.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
-
-import 'login.dart';
+import 'login_validation.dart';
 
 class LoginState extends Equatable {
   const LoginState({

@@ -1,4 +1,7 @@
+import 'package:ToDo/loginScreen/loginForm.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'login_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -8,7 +11,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  @override
+    @override
   void initState() {
     super.initState();
   }
@@ -23,91 +26,12 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         body: SafeArea(
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Hello again!',
-                  style: /*GoogleFonts.bebasNeue(fontSize: 32)*/
-                      TextStyle(
-                          color: Colors.black87,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 32),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Welcome back!',
-                  style: TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 20),
-                ),
-                SizedBox(height: 32),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 60),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).cardTheme.color,
-                        border: Border.all(color: Theme.of(context).highlightColor),
-                        borderRadius: BorderRadius.circular(12)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 16.0),
-                      child: TextField(
-                        decoration: InputDecoration(
-                            border: InputBorder.none, hintText: 'Login'),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 12),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 60),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).cardTheme.color,
-                        border: Border.all(color: Theme.of(context).highlightColor),
-                        borderRadius: BorderRadius.circular(12)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 16.0),
-                      child: TextField(
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            border: InputBorder.none, hintText: 'Password'),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 12),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 60),
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.circular(12)),
-                    child: Center(
-                      child: Text(
-                        'Sing in',
-                        style: TextStyle(color: Theme.of(context).highlightColor, fontSize: 16),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Not a member?',
-                        style: TextStyle(
-                            color: Colors.black54,
-                            fontWeight: FontWeight.bold)),
-                    Text(' Register now',
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.bold))
-                  ],
-                )
-              ],
-            ),
+            child: BlocProvider(
+                create: (context) {
+                     return LoginBloc();
+                     },
+                  child: LoginForm(),
+            )
           ),
         ));
   }

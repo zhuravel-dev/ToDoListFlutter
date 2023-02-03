@@ -1,23 +1,22 @@
-import 'package:ToDo/loginScreen/password.dart';
+import 'package:ToDo/loginScreen/password_validation.dart';
 import 'package:bloc/bloc.dart';
 import 'package:formz/formz.dart';
-import 'Login.dart';
-import 'authentication_repository.dart';
 import 'loginState.dart';
 import 'login_event.dart';
+import 'login_validation.dart';
 
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc({
-    required AuthenticationRepository authenticationRepository,
-  })  : _authenticationRepository = authenticationRepository,
+  LoginBloc(
+   // required AuthenticationRepository authenticationRepository,
+  )  :  //_authenticationRepository = authenticationRepository,
         super(const LoginState()) {
     on<LoginUsernameChanged>(_onUsernameChanged);
     on<LoginPasswordChanged>(_onPasswordChanged);
-    on<LoginSubmitted>(_onSubmitted);
+    //on<LoginSubmitted>(_onSubmitted);
   }
 
-  final AuthenticationRepository _authenticationRepository;
+ // final AuthenticationRepository _authenticationRepository;
 
   void _onUsernameChanged(
       LoginUsernameChanged event,
@@ -45,7 +44,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     );
   }
 
-  Future<void> _onSubmitted(
+ /* Future<void> _onSubmitted(
       LoginSubmitted event,
       Emitter<LoginState> emit,
       ) async {
@@ -61,5 +60,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit(state.copyWith(status: FormzStatus.submissionFailure));
       }
     }
-  }
+  }*/
+
+
 }
