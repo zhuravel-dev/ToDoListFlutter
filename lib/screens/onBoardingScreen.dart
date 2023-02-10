@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
 import 'introScreens/introPage1.dart';
 import 'introScreens/introPage2.dart';
-
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);

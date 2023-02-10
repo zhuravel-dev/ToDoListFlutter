@@ -1,11 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-
 import 'loginState.dart';
-import 'login_bloc.dart';
-import 'login_event.dart';
+import 'loginBloc.dart';
+import 'loginEvent.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({super.key});
@@ -27,11 +25,40 @@ class LoginForm extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Text(
+              'Hello again!',
+              style: TextStyle(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 32),
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Welcome back!',
+              style: TextStyle(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 20),
+            ),
+            SizedBox(height: 32),
             _UsernameInput(),
-            const Padding(padding: EdgeInsets.all(12)),
+            SizedBox(height: 12),
             _PasswordInput(),
-            const Padding(padding: EdgeInsets.all(12)),
+            SizedBox(height: 12),
             _LoginButton(),
+            SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Not a member?',
+                    style: TextStyle(
+                        color: Colors.black54,
+                        fontWeight: FontWeight.bold)),
+                Text(' Register now',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.bold))
+              ],
+            )
           ],
         ),
       ),
@@ -45,13 +72,29 @@ class _UsernameInput extends StatelessWidget {
     return BlocBuilder<LoginBloc, LoginState>(
       buildWhen: (previous, current) => previous.login != current.login,
       builder: (context, state) {
-        return TextField(
-          key: const Key('loginForm_usernameInput_textField'),
-          onChanged: (username) =>
-              context.read<LoginBloc>().add(LoginUsernameChanged(username)),
-          decoration: InputDecoration(
-            border: InputBorder.none, hintText: 'Login',
-            errorText: state.login.invalid ? 'Login error' : null,
+        return Padding(padding: const EdgeInsets.symmetric(horizontal: 60),
+          child: Container(
+            decoration: BoxDecoration(
+                color: Theme
+                    .of(context)
+                    .cardTheme
+                    .color,
+                border: Border.all(color: Theme
+                    .of(context)
+                    .highlightColor),
+                borderRadius: BorderRadius.circular(12)),
+            child: Padding(padding: const EdgeInsets.only(left: 16.0),
+              child: TextField(
+                key: const Key('loginForm_usernameInput_textField'),
+                onChanged: (username) =>
+                    context.read<LoginBloc>().add(
+                        LoginUsernameChanged(username)),
+                decoration: InputDecoration(
+                  border: InputBorder.none, hintText: 'Login',
+                  errorText: state.login.invalid ? 'Login error' : null,
+                ),
+              ),
+            ),
           ),
         );
       },
@@ -65,14 +108,30 @@ class _PasswordInput extends StatelessWidget {
     return BlocBuilder<LoginBloc, LoginState>(
       buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
-        return TextField(
-          key: const Key('loginForm_passwordInput_textField'),
-          onChanged: (password) =>
-              context.read<LoginBloc>().add(LoginPasswordChanged(password)),
-          obscureText: true,
-          decoration: InputDecoration(
-            labelText: 'password',
-            errorText: state.password.invalid ? 'invalid password' : null,
+        return Padding(padding: const EdgeInsets.symmetric(horizontal: 60),
+          child: Container(
+            decoration: BoxDecoration(
+                color: Theme
+                    .of(context)
+                    .cardTheme
+                    .color,
+                border: Border.all(color: Theme
+                    .of(context)
+                    .highlightColor),
+                borderRadius: BorderRadius.circular(12)),
+            child: Padding(padding: const EdgeInsets.only(left: 16.0),
+              child: TextField(
+                key: const Key('loginForm_passwordInput_textField'),
+                onChanged: (password) =>
+                    context.read<LoginBloc>().add(
+                        LoginPasswordChanged(password)),
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  errorText: state.password.invalid ? 'Password error' : null,
+                ),
+              ),
+            ),
           ),
         );
       },
@@ -84,20 +143,34 @@ class _LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
-      buildWhen: (previous, current) => previous.status != current.status,
-      builder: (context, state) {
-        return state.status.isSubmissionInProgress
-            ? const CircularProgressIndicator()
-            : ElevatedButton(
-          key: const Key('loginForm_continue_raisedButton'),
-          onPressed: state.status.isValidated
-              ? () {
-            context.read<LoginBloc>().add(const LoginSubmitted());
-          }
-              : null,
-          child: const Text('Login'),
-        );
-      },
+        buildWhen: (previous, current) => previous.status != current.status,
+        builder: (context, state) {
+          return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 60),
+                child: SizedBox(
+                  height: 60, //height of button
+                  width: double.infinity,
+                  child: ElevatedButton(
+                      key: const Key('loginForm_continue_raisedButton'),
+                      onPressed: () {
+                        context.read<LoginBloc>().add(const LoginSubmitted());
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        shape: RoundedRectangleBorder( //to set border radius to button
+                            borderRadius: BorderRadius.circular(12)
+                        ),
+                        padding: const EdgeInsets.all(16),
+                      ),
+                      child: Container(
+                        child: Text('Sing in',
+                            style: TextStyle(color: Theme.of(context).highlightColor, fontSize: 16)),
+                      )
+                  ),
+                )
+
+                  );
+        }
     );
   }
 }
