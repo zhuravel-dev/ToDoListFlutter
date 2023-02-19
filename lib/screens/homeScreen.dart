@@ -1,8 +1,6 @@
 import 'package:ToDo/screens/settingsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
-import '../bloc_without_library.dart';
 import '../db/toDoBox.dart';
 import '../model/toDoModel.dart';
 import '../widgets/toDoItem.dart';
@@ -16,8 +14,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  BlocAddTaskEvent _bloc = BlocAddTaskEvent();
-
   var toDoList = <ToDoModel>[];
   late String userData;
   final searchController = TextEditingController();
@@ -30,7 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    _bloc.dispose();
     Hive.box('Passcode').close();
     super.dispose();
   }
@@ -55,7 +50,9 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             )
           ],
-          backgroundColor: Theme.of(context).primaryColor),
+          backgroundColor: Theme.of(context).primaryColor,
+          automaticallyImplyLeading: false,
+      ),
       bottomNavigationBar: BottomAppBar(
           color: Theme.of(context).bottomAppBarColor,
           shape: CircularNotchedRectangle(),
@@ -79,16 +76,36 @@ class _HomeScreenState extends State<HomeScreen> {
         child: const Icon(Icons.add),
         backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
         onPressed: () {
-          _bloc.inputEventSink.add(ClickToButtonEvent.event_click);
           showDialog(
               context: context,
               barrierDismissible: true,
-              builder: (_) => StreamBuilder(
-                  stream: _bloc.outputStateStream.asBroadcastStream(),
-                  builder: (context, snapshot) {
-                      return AlertDialogAddTask();
-                  }
-              ));
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text("Add note"),
+                  content: TextField(
+                    onChanged: (String value) {
+                      userData = value;
+                    },
+                    decoration: const InputDecoration(hintText: "Write here"),
+                  ),
+                  actions: [
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          toDoList.add(ToDoModel(
+                            id: DateTime.now().millisecondsSinceEpoch,
+                            text: userData,
+                          ));
+                        });
+                        writeDataToLocalStorage(userData);
+                        Navigator.of(context).pop();
+                      },
+                      style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).primaryColor),
+                      child: Icon(Icons.done, color: Theme.of(context).iconTheme.color),
+                    ),
+                  ],
+                );
+              });
         },
       ),
       body: Stack(
@@ -128,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
     isSearch = enteredData.isNotEmpty;
     final currentValues = ToDoBox.getModel().values;
     final foundValues = currentValues.where((ToDoModel todo) {
-    return todo.text.contains(enteredData);
+      return todo.text.contains(enteredData);
     }).toList();
     final List<ToDoModel> listCopied = currentValues.toList();
     listCopied.forEach((element) {
@@ -194,33 +211,4 @@ class _HomeScreenState extends State<HomeScreen> {
     print(box.values);
     toDoList = box.values.toList();
   }
-
-  AlertDialog AlertDialogAddTask() {
-    return AlertDialog(
-      title: const Text("Add note"),
-      content: TextField(
-        onChanged: (String value) {
-          userData = value;
-        },
-        decoration: const InputDecoration(hintText: "Write here"),
-      ),
-      actions: [
-        ElevatedButton(
-          onPressed: () {
-            setState(() {
-              toDoList.add(ToDoModel(
-                id: DateTime.now().millisecondsSinceEpoch,
-                text: userData,
-              ));
-            });
-            writeDataToLocalStorage(userData);
-            Navigator.of(context).pop();
-          },
-          style: ElevatedButton.styleFrom(backgroundColor: Theme.of(context).primaryColor),
-          child: Icon(Icons.done, color: Theme.of(context).iconTheme.color),
-        ),
-      ],
-    );
-  }
-
 }

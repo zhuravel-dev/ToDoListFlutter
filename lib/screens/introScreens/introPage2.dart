@@ -1,7 +1,6 @@
 import 'package:ToDo/screens/passcode/checkPasscodeScreen.dart';
 import 'package:flutter/material.dart';
-
-import '../../loginScreen/loginScreen.dart';
+import '../loginScreen/loginScreen.dart';
 
 class IntroPage2 extends StatelessWidget {
   @override
@@ -35,7 +34,7 @@ class IntroPage2 extends StatelessWidget {
                   shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(12.0)),
                 ),
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (context) => CheckPasscodeScreen()));

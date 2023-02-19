@@ -1,12 +1,9 @@
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:ToDo/screens/homeScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:passcode_screen/passcode_screen.dart';
-
 import '../../db/passcodeBox.dart';
 
 class CheckPasscodeScreen extends StatefulWidget {
@@ -41,12 +38,6 @@ class _CheckPasscodeScreenState extends State<CheckPasscodeScreen> {
           title: Text("To Do List", style: TextStyle(color: Theme
               .of(context).highlightColor)),
           backgroundColor: Theme.of(context).primaryColor,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-              onPressed: () => {
-              SystemNavigator.pop()
-              },
-          ),
       )
     );
   }
