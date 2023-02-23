@@ -3,7 +3,7 @@ import 'package:ToDo/screens/passcode/createPasscodeScreen.dart';
 import 'package:ToDo/screens/settingsScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../db/passcodeBox.dart';
+import '../../dbForToDoListHive/passcodeBox.dart';
 
 class PasscodeSettingsScreen extends StatefulWidget {
   const PasscodeSettingsScreen({Key? key}) : super(key: key);

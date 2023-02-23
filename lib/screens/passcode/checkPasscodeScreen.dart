@@ -4,7 +4,7 @@ import 'package:ToDo/screens/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:passcode_screen/passcode_screen.dart';
-import '../../db/passcodeBox.dart';
+import '../../dbForToDoListHive/passcodeBox.dart';
 
 class CheckPasscodeScreen extends StatefulWidget {
   CheckPasscodeScreen({Key? key}) : super(key: key);

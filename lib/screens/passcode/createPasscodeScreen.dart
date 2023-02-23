@@ -1,9 +1,10 @@
 import 'dart:async';
-import 'package:ToDo/db/passcodeBox.dart';
 import 'package:ToDo/model/passcodeModel.dart';
 import 'package:ToDo/screens/passcode/passcodeSettingsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:passcode_screen/passcode_screen.dart';
+
+import '../../dbForToDoListHive/passcodeBox.dart';
 
 class CreatePasscodeScreen extends StatefulWidget {
   CreatePasscodeScreen({Key? key}) : super(key: key);

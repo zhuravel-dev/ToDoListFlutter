@@ -7,7 +7,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'model/toDoModel.dart';
 
-
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(ToDoModelAdapter());
@@ -20,7 +19,6 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(ToDoApp());
 }
-
 
 class ToDoApp extends StatefulWidget {
     @override

@@ -1,7 +1,7 @@
 import 'package:ToDo/screens/settingsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import '../db/toDoBox.dart';
+import '../dbForToDoListHive/toDoBox.dart';
 import '../model/toDoModel.dart';
 import '../widgets/toDoItem.dart';
 import 'calendarScreen.dart';
