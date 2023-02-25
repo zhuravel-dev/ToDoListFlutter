@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 class SQLiteDB {
 
   static Database? _database;
-  final String tableName = 'users.db';
+  final String tableName = 'users';
 
   Future<Database> get database async =>
       _database ??= await _initializeDB();
@@ -21,16 +21,16 @@ class SQLiteDB {
   void _onCreate(Database db, int version) async {
     await db.execute("CREATE TABLE Users(id INTEGER PRIMARY KEY AUTOINCREMENT,"
         "login TEXT NOT NULL,"
-        "password INTEGER)");
+        "password TEXT)");
     print("Successful create");
   }
 
   // CREATE
-  Future<int?> newUser(User user) async {
+  Future<int?> newUser(String login, String password) async {
     final db = await database;
     var raw = await db.rawInsert(
-        "INSERT Into User (id, login, password)"
-            "VALUES (${user.id}, ${user.login}, ${user.password})");
+        "INSERT Into users (login, password)"
+            "VALUES ('${login}', '${password}')");
     print("Successful create");
     return raw;
   }
@@ -43,10 +43,19 @@ class SQLiteDB {
   }
 
   //UPDATE
-  Future<int> updateUserData(id,login,password) async {
+  Future<int> updateLogin(login) async {
     //Db create/table create
     var db = await database;
-    var status = await db.rawUpdate("update product set id=?,login=?,password=?",[id,login,password]);
+    var status = await db.rawUpdate("update product set login=?",[login]);
+    print("Successful update");
+    return status;
+  }
+
+  //UPDATE
+  Future<int> updatePassword(password) async {
+    //Db create/table create
+    var db = await database;
+    var status = await db.rawUpdate("update product set password=?",[password]);
     print("Successful update");
     return status;
   }
@@ -55,10 +64,17 @@ class SQLiteDB {
   // DELETE
    Future<int> deleteUser(int id) async {
      var db = await database;
-     var status = await db.rawDelete("delete from product where pid=?",[id]);
+     var status = await db.rawDelete("delete from users.db wher e id=?",[id]);
      print("Successful delete");
      return status;
    }
 
+   //CHECK DATABASE
+  Future<void> openDatabaseAndPrintContent() async {
+    final db = await openDatabase('users');
+    final content = await db.rawQuery('SELECT * FROM users');
+    print(content);
+    await db.close();
+  }
 
 }
