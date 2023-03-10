@@ -13,6 +13,7 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
+@visibleForTesting
 class _HomeScreenState extends State<HomeScreen> {
   var toDoList = <ToDoModel>[];
   late String userData;
@@ -26,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    Hive.box('Passcode').close();
+    //Hive.box('Passcode').close();
     super.dispose();
   }
 

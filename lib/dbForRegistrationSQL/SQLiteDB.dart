@@ -1,4 +1,3 @@
-import 'package:ToDo/dbForRegistrationSQL/userModel.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -8,9 +7,9 @@ class SQLiteDB {
   final String tableName = 'users';
 
   Future<Database> get database async =>
-      _database ??= await _initializeDB();
+      _database ??= await initializeDB();
 
-  _initializeDB() async {
+  initializeDB() async {
     String dataBasePath = await getDatabasesPath();
     String path = join(dataBasePath, tableName);
     var theDB = await openDatabase(path, version: 1, onCreate: _onCreate);

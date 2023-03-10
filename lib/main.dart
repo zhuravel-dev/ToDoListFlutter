@@ -8,6 +8,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'model/toDoModel.dart';
 
 void main() async {
+  var widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(ToDoModelAdapter());
   await Hive.openBox<ToDoModel>('ToDoApp');
@@ -15,7 +16,6 @@ void main() async {
   Hive.registerAdapter(PasscodeModelAdapter());
   await Hive.openBox<PasscodeModel>('Passcode');
 
-  var widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(ToDoApp());
 }
