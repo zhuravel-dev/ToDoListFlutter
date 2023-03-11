@@ -14,7 +14,8 @@ class CheckPasscodeScreen extends StatefulWidget {
 }
 
 class _CheckPasscodeScreenState extends State<CheckPasscodeScreen> {
-  final StreamController<bool> _verificationNotifier = StreamController<bool>.broadcast();
+  final StreamController<bool> _verificationNotifier = StreamController<
+      bool>.broadcast();
   bool isAuthenticated = false;
 
   @override
@@ -27,33 +28,42 @@ class _CheckPasscodeScreenState extends State<CheckPasscodeScreen> {
   @override
   void initState() {
     super.initState();
+    isPasscodeOn(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    isPasscodeOn(context);
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
+        backgroundColor: Theme
+            .of(context)
+            .backgroundColor,
+        appBar: AppBar(
           title: Text("To Do List", style: TextStyle(color: Theme
-              .of(context).highlightColor)),
-          backgroundColor: Theme.of(context).primaryColor,
-      )
+              .of(context)
+              .highlightColor)),
+          backgroundColor: Theme
+              .of(context)
+              .primaryColor,
+        )
     );
   }
 
   void isPasscodeOn(BuildContext context) async {
-    final savedPasscode = PasscodeBox.getModel().values.toList();
+    final savedPasscode = PasscodeBox
+        .getModel()
+        .values
+        .toList();
     if (savedPasscode.length != 0) {
       showPasscode(context, opaque: true);
     }
     if (savedPasscode.length == 0) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
     }
     else {
       log('error in isPasscodeOn, checkPasscodeScreen');
     }
-    }
+  }
 
   void showPasscode(BuildContext context,
       {required bool opaque, Widget? cancelButton, List<String>? digits}) =>
@@ -66,7 +76,9 @@ class _CheckPasscodeScreenState extends State<CheckPasscodeScreen> {
                     title: Text('Enter you passcode',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            color: Theme.of(context).highlightColor,
+                            color: Theme
+                                .of(context)
+                                .highlightColor,
                             fontSize: 28)),
                     passwordEnteredCallback: passcodeEntered,
                     cancelButton: MaterialButton(
@@ -77,7 +89,9 @@ class _CheckPasscodeScreenState extends State<CheckPasscodeScreen> {
                         'Cancel',
                         style: TextStyle(
                             fontSize: 16,
-                            color: Theme.of(context).highlightColor),
+                            color: Theme
+                                .of(context)
+                                .highlightColor),
                         semanticsLabel: 'Cancel',
                       ),
                     ),
@@ -85,7 +99,9 @@ class _CheckPasscodeScreenState extends State<CheckPasscodeScreen> {
                       'Delete',
                       style: TextStyle(
                           fontSize: 16,
-                          color: Theme.of(context).highlightColor),
+                          color: Theme
+                              .of(context)
+                              .highlightColor),
                       semanticsLabel: 'Delete',
                     ),
                     shouldTriggerVerification: _verificationNotifier.stream,
@@ -96,20 +112,29 @@ class _CheckPasscodeScreenState extends State<CheckPasscodeScreen> {
                   )));
 
   passcodeEntered(String enteredPasscode) async {
-    var savedPassInDB = PasscodeBox.getModel().getAt(0)?.text;
+    var savedPassInDB = PasscodeBox
+        .getModel()
+        .getAt(0)
+        ?.text;
     bool isValid = savedPassInDB == enteredPasscode;
     _verificationNotifier.add(isValid);
     if (isValid) {
-      setState(() {
-        this.isAuthenticated = isValid;
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomeScreen()));
-          });
-      });
+      await _handleAuthentication();
     }
   }
 
-  passcodeCancelled() {
-    Navigator.of(context).pop();
+  Future<void> _handleAuthentication() async {
+    setState(() {
+      this.isAuthenticated = true;
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => HomeScreen()));
+    });
   }
-}
+
+    passcodeCancelled() {
+      Navigator.of(context).pop();
+    }
+  }
+

@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    //Hive.box('Passcode').close();
+    Hive.box('Passcode').close();
     super.dispose();
   }
 
