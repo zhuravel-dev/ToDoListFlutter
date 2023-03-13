@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'loginBloc.dart';
-import 'loginForm.dart';
+import 'authorizationBloc.dart';
+import 'authorizationForm.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class AuthorizationScreen extends StatefulWidget {
+  const AuthorizationScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _AuthorizationScreenState createState() => _AuthorizationScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _AuthorizationScreenState extends State<AuthorizationScreen> {
     @override
   void initState() {
     super.initState();
@@ -21,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
-          title: Text("To Do List", style: TextStyle(color: Theme.of(context).highlightColor),),
+          title: Text("Authorization", style: TextStyle(color: Theme.of(context).highlightColor),),
           backgroundColor: Theme.of(context).primaryColor,
           automaticallyImplyLeading: true,
         ),
@@ -37,7 +37,6 @@ class _LoginScreenState extends State<LoginScreen> {
         ));
   }
 
-  @override
   State<StatefulWidget> createState() {
     throw UnimplementedError();
   }

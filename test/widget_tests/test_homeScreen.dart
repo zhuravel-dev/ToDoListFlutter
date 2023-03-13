@@ -5,18 +5,20 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:path_provider/path_provider.dart';
 
-
 void main() async {
-
   TestWidgetsFlutterBinding.ensureInitialized();
   final directory = await getTemporaryDirectory();
   Hive.init(directory.path);
   Hive.registerAdapter(ToDoModelAdapter());
 
   group('Home Screen', () {
-
     setUp(() async {
       await Hive.openBox<ToDoModel>('ToDoApp');
+    });
+
+    testWidgets('should display the app bar', (WidgetTester tester) async {
+      await tester.pumpWidget(MaterialApp(home: HomeScreen()));
+      expect(find.byType(AppBar), findsOneWidget);
     });
 
     testWidgets('should display the app bar title', (WidgetTester tester) async {
@@ -43,17 +45,21 @@ void main() async {
       expect(addButtonFinder, findsOneWidget);
     });
 
-    testWidgets('should display the settings icon button', (WidgetTester tester) async {
+    testWidgets('should display the settings icon button',
+        (WidgetTester tester) async {
       await tester.pumpWidget(MaterialApp(home: HomeScreen()));
       final settingsButtonFinder = find.byIcon(Icons.settings);
       expect(settingsButtonFinder, findsOneWidget);
     });
 
+    testWidgets('should display the bottom bar', (WidgetTester tester) async {
+      await tester.pumpWidget(MaterialApp(home: HomeScreen()));
+      expect(find.byType(BottomAppBar), findsOneWidget);
+    });
 
   });
 
   tearDownAll(() async {
     await Hive.box<ToDoModel>('ToDoApp').close();
   });
-
 }

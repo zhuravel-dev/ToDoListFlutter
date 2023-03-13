@@ -40,7 +40,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   style: TextStyle(
                       color: Colors.black87,
                       fontWeight: FontWeight.normal,
-                      fontSize: 24),
+                      fontSize: 22),
                 ),
                 SizedBox(height: 16),
                 UsernameInput(),
@@ -191,7 +191,7 @@ class RegisterButton extends StatelessWidget {
                 padding: const EdgeInsets.all(16),
               ),
               child: Container(
-                child: Text('Registration',
+                child: Text('Sing up',
                     style: TextStyle(color: Theme
                         .of(context)
                         .highlightColor, fontSize: 16)),

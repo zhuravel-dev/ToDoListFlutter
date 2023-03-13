@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import '../registerScreen/registerScreen.dart';
-import 'loginState.dart';
-import 'loginBloc.dart';
-import 'loginEvent.dart';
+import 'authorizationState.dart';
+import 'authorizationBloc.dart';
+import 'authorizationEvent.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({super.key});
@@ -132,7 +132,7 @@ class _PasswordInput extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12)),
             child: Padding(padding: const EdgeInsets.only(left: 16.0),
               child: TextField(
-                key: const Key('loginForm_passwordInput_textField'),
+                key: const Key('passwordForm_passwordInput_textField'),
                 onChanged: (password) =>
                     context.read<LoginBloc>().add(
                         LoginPasswordChanged(password)),

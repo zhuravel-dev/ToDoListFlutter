@@ -4,7 +4,6 @@ import 'package:ToDo/screens/passcode/passcodeSettingsScreen.dart';
 import 'package:flutter/material.dart';
 import '../dbForToDoListHive/passcodeBox.dart';
 
-
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
@@ -17,11 +16,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
   final savedPasscodeInDB = PasscodeBox.getModel();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-          title: Text("To Do List", style: TextStyle(color: Theme
+          title: Text("Settings", style: TextStyle(color: Theme
               .of(context)
               .highlightColor)),
           backgroundColor: Theme
@@ -110,7 +114,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               tileColor: Theme.of(context).cardTheme.color,
               leading: Icon(Icons.color_lens_outlined, color: Theme.of(context).primaryColor),
               title: Text(
-                "App`s colors",
+                "App colors",
                 style: TextStyle(fontSize: 16),
               ),
             ),

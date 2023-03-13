@@ -1,8 +1,8 @@
-import 'package:ToDo/screens/loginScreen/passwordValidation.dart';
+import 'package:ToDo/screens/authorizationScreen/passwordValidation.dart';
 import 'package:bloc/bloc.dart';
 import 'package:formz/formz.dart';
-import 'loginState.dart';
-import 'loginEvent.dart';
+import 'authorizationState.dart';
+import 'authorizationEvent.dart';
 import 'loginValidation.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {

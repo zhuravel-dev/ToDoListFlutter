@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:ToDo/screens/homeScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:passcode_screen/passcode_screen.dart';
 import '../../dbForToDoListHive/passcodeBox.dart';
 
@@ -20,7 +19,6 @@ class _CheckPasscodeScreenState extends State<CheckPasscodeScreen> {
 
   @override
   void dispose() {
-    Hive.box('Passcode').close();
     _verificationNotifier.close();
     super.dispose();
   }

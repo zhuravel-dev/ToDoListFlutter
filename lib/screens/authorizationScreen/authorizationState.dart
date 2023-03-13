@@ -1,4 +1,4 @@
-import 'package:ToDo/screens/loginScreen/passwordValidation.dart';
+import 'package:ToDo/screens/authorizationScreen/passwordValidation.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'loginValidation.dart';
