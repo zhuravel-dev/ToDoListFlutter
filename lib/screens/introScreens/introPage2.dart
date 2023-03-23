@@ -27,6 +27,7 @@ class IntroPage2 extends StatelessWidget {
                 child: Text('CONTINUE WITH AUTHORIZATION', style: TextStyle(color:  Theme.of(context).highlightColor, fontSize: 16))),
             Padding(padding: EdgeInsets.symmetric(vertical: 10)),
             ElevatedButton(
+                key: Key('continue_without_auth_button'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor:  Theme.of(context).primaryColor,
                   padding:
