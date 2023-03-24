@@ -2,8 +2,8 @@ import 'package:ToDo/dbForRegistrationSQL/SQLiteDB.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
 
 class MockDatabase extends Mock implements Database {}
