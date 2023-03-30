@@ -1,7 +1,6 @@
 import 'package:ToDo/screens/authorizationScreen/passwordValidation.dart';
 import 'package:bloc/bloc.dart';
 import 'package:formz/formz.dart';
-
 import 'authorizationEvent.dart';
 import 'authorizationState.dart';
 import 'loginValidation.dart';

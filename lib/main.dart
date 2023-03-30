@@ -1,12 +1,10 @@
 import 'dart:ui';
-
 import 'package:ToDo/model/passcodeModel.dart';
 import 'package:ToDo/screens/onBoardingScreen.dart';
 import 'package:ToDo/theme/customThemes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
 import 'model/toDoModel.dart';
 
 void main() async {

@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-
 import '../registerScreen/registerScreen.dart';
 import 'authorizationBloc.dart';
 import 'authorizationEvent.dart';
